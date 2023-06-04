@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felps.algamoney.api.event.CreatedResourceEvent;
@@ -36,7 +38,7 @@ public class PeopleResource {
   }
 
   @PostMapping
-  public ResponseEntity<People> store(@Valid @RequestBody People people, HttpServletResponse response){
+  public ResponseEntity<People> store(@Valid @RequestBody People people, HttpServletResponse response) {
     People newPeople = peopleRepository.save(people);
 
     publisher.publishEvent(new CreatedResourceEvent(this, response, newPeople.getId()));
@@ -45,9 +47,15 @@ public class PeopleResource {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getById(@PathVariable Long id){
+  public ResponseEntity<?> getById(@PathVariable Long id) {
     Optional<People> people = peopleRepository.findById(id);
 
     return !people.isEmpty() ? ResponseEntity.ok(people) : ResponseEntity.notFound().build();
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable Long id) {
+    peopleRepository.deleteById(id);
   }
 }
