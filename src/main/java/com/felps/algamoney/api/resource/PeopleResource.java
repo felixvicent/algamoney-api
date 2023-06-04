@@ -66,9 +66,14 @@ public class PeopleResource {
 
   @PutMapping("/{id}")
   public ResponseEntity<People> update(@PathVariable Long id, @Valid @RequestBody People people) {
-
     People storedPeople = peopleService.update(id, people);
 
     return ResponseEntity.ok(storedPeople);
+  }
+
+  @PutMapping("/{id}/active")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void updateActive(@PathVariable Long id, @RequestBody Boolean active) {
+    peopleService.updateActive(id, active);
   }
 }

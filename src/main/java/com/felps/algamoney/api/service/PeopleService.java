@@ -16,16 +16,30 @@ public class PeopleService {
   private PeopleRepository peopleRepository;
 
   public People update(Long id, People people) {
+    People storedPeople = findPeopleById(id);
+
+    BeanUtils.copyProperties(people, storedPeople, "id");
+
+    peopleRepository.save(storedPeople);
+
+    return storedPeople;
+  }
+
+  public void updateActive(Long id, Boolean active) {
+    People storedPeople = findPeopleById(id);
+
+    storedPeople.setActive(active);
+
+    peopleRepository.save(storedPeople);
+  }
+
+  private People findPeopleById(Long id) {
     Optional<People> storedPeople = peopleRepository.findById(id);
 
     if (storedPeople.isEmpty()) {
       throw new EmptyResultDataAccessException(1);
     }
-
-    BeanUtils.copyProperties(people, storedPeople.get(), "id");
-
-    peopleRepository.save(storedPeople.get());
-
     return storedPeople.get();
   }
+
 }
