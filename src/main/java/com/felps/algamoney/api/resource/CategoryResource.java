@@ -18,6 +18,7 @@ import com.felps.algamoney.api.model.Category;
 import com.felps.algamoney.api.repository.CategoryRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categories")
@@ -32,7 +33,7 @@ public class CategoryResource {
   }
 
   @PostMapping
-  public ResponseEntity<Category> store(@RequestBody Category category, HttpServletResponse response) {
+  public ResponseEntity<Category> store(@Valid @RequestBody Category category, HttpServletResponse response) {
     Category newCategory = categoryRepository.save(category);
     
     URI uri = ServletUriComponentsBuilder
