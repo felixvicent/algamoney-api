@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.felps.algamoney.api.event.CreatedResourceEvent;
 import com.felps.algamoney.api.model.People;
 import com.felps.algamoney.api.repository.PeopleRepository;
+import com.felps.algamoney.api.service.PeopleService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -28,6 +30,9 @@ import jakarta.validation.Valid;
 public class PeopleResource {
   @Autowired
   private PeopleRepository peopleRepository;
+
+  @Autowired
+  private PeopleService peopleService;
 
   @Autowired
   private ApplicationEventPublisher publisher;
@@ -57,5 +62,13 @@ public class PeopleResource {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(@PathVariable Long id) {
     peopleRepository.deleteById(id);
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<People> update(@PathVariable Long id, @Valid @RequestBody People people) {
+
+    People storedPeople = peopleService.update(id, people);
+
+    return ResponseEntity.ok(storedPeople);
   }
 }
