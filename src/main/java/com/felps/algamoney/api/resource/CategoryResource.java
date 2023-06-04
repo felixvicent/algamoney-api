@@ -48,8 +48,6 @@ public class CategoryResource {
   public ResponseEntity<?> getById(@PathVariable Long id){
     Optional<Category> category = categoryRepository.findById(id);
 
-    System.out.println(category);
-
     return !category.isEmpty() ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
   }
 }
