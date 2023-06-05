@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.felps.algamoney.api.event.CreatedResourceEvent;
 import com.felps.algamoney.api.model.Entry;
 import com.felps.algamoney.api.repository.EntryRepository;
+import com.felps.algamoney.api.repository.filter.EntryFilter;
 import com.felps.algamoney.api.service.EntryService;
 import com.felps.algamoney.api.service.exception.NonexistentOrInactivePeopleException;
 import com.felps.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler.Error;
@@ -45,8 +46,8 @@ public class EntryResource {
   private ApplicationEventPublisher publisher;
 
   @GetMapping
-  public List<Entry> list() {
-    return entryRepository.findAll();
+  public List<Entry> search(EntryFilter entryFilter) {
+    return entryRepository.filter(entryFilter);
   }
 
   @GetMapping("/{id}")
