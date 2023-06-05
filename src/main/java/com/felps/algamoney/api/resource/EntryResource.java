@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +67,19 @@ public class EntryResource {
     return ResponseEntity.status(HttpStatus.CREATED).body(newEntry);
   }
 
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable Long id) {
+    Optional<Entry> entry = entryRepository.findById(id);
+
+    if (entry.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    entryRepository.delete(entry.get());
+
+    return ResponseEntity.noContent().build();
+  }
+
   @ExceptionHandler({ NonexistentOrInactivePeopleException.class })
   public ResponseEntity<Object> handleNonexistentOrInactivePeopleException(NonexistentOrInactivePeopleException ex) {
     String userMessage = messageSource.getMessage("people.nonexistenteorinactive", null,
@@ -76,5 +90,4 @@ public class EntryResource {
 
     return ResponseEntity.badRequest().body(errors);
   }
-
 }
