@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "entries")
@@ -22,24 +23,30 @@ public class Entry {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotNull
   private String description;
 
+  @NotNull
   @Column(name = "due_date")
   private LocalDate dueDate;
 
   private LocalDate payday;
 
+  @NotNull
   private BigDecimal value;
 
   private String observation;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   private EntryType type;
 
+  @NotNull
   @ManyToOne
   @JoinColumn(name = "id_category")
   private Category category;
 
+  @NotNull
   @ManyToOne
   @JoinColumn(name = "id_people")
   private People people;
