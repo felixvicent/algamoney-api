@@ -36,6 +36,14 @@ public class Entry {
   @Enumerated(EnumType.STRING)
   private EntryType type;
 
+  @ManyToOne
+  @JoinColumn(name = "id_category")
+  private Category category;
+
+  @ManyToOne
+  @JoinColumn(name = "id_people")
+  private People people;
+
   public Long getId() {
     return id;
   }
@@ -92,11 +100,19 @@ public class Entry {
     this.type = type;
   }
 
-  @ManyToOne
-  @JoinColumn(name = "id_category")
-  private Category category;
+  public Category getCategory() {
+    return category;
+  }
 
-  @ManyToOne
-  @JoinColumn(name = "id_people")
-  private People people;
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  public People getPeople() {
+    return people;
+  }
+
+  public void setPeople(People people) {
+    this.people = people;
+  }
 }
