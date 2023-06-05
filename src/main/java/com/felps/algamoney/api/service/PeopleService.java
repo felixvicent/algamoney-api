@@ -33,7 +33,7 @@ public class PeopleService {
     peopleRepository.save(storedPeople);
   }
 
-  private People findPeopleById(Long id) {
+  public People findPeopleById(Long id) {
     Optional<People> storedPeople = peopleRepository.findById(id);
 
     if (storedPeople.isEmpty()) {
